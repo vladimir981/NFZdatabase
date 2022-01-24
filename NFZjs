@@ -1,0 +1,404 @@
+<script>
+
+class Pacjent{
+	
+	constructor(imie, nazwisko){
+		this.imie = imie;
+		this.nazwisko = nazwisko;
+		this.listaChorob = [];
+	}
+		
+}
+
+class Przychodnia{
+
+	constructor(nazwa, miasto){
+	
+		this.nazwa = nazwa;
+		this.miasto = miasto;
+		this.listaPacjentow = [];
+	}
+	
+	dodajPacjenta(imie, nazwisko){
+		
+		
+		while(true){													
+			imie = prompt("Imie pacjenta").toUpperCase();
+			nazwisko = prompt("Nazwisko pacjenta").toUpperCase();
+			
+			if(this.listaPacjentow.length > 0){
+					
+				for(let i of this.listaPacjentow){				
+																
+					if(i.imie == imie || i.nazwisko == nazwisko){ 
+					
+						alert("Pacjent juz jest w bazie przychodni");
+						return false;
+					}
+				}
+
+				if(nazwisko == "" || imie == ""){			
+					alert("Niepoprawne imie albo nazwisko");
+				}
+				else{
+					let pacjent = new Pacjent(imie, nazwisko);
+					this.listaPacjentow.push(pacjent);
+					console.log(`Pacjent ${imie} ${nazwisko} dodany do przychodni ${this.nazwa}`);
+					return false;
+				}
+			}
+			
+			else if(this.listaPacjentow.length == 0){
+						
+				if(nazwisko == "" || imie == ""){
+					alert("Niepoprawne imie albo nazwisko");
+					return false;
+				}
+				else{
+					let pacjent = new Pacjent(imie, nazwisko);
+					this.listaPacjentow.push(pacjent);
+					console.log(`Pacjent ${imie} ${nazwisko} dodany do przychodni ${this.nazwa}`);
+					return false;
+				}
+				
+			}
+		}
+	}
+	pokazPacjenta(){
+	
+		if(this.listaPacjentow.length > 0){
+				
+			for(let i of this.listaPacjentow){
+				
+					console.log(`PACJENT - Imie: ${i.imie} Nazwisko: ${i.nazwisko}`);
+			
+			}
+		}
+		else if(this.listaPacjentow.length == 0){
+			console.log("Przychodnia nie ma pacjentow");
+			
+		}
+		
+	}
+	
+	dodajChorobe(){
+		
+		if(this.listaPacjentow.length == 0){
+			console.log("Brak pacjentow w przychodni");
+		}
+		else if(this.listaPacjentow.length > 0){
+			
+			let nazwisko = prompt("Podaj nazwisko pacjenta").toUpperCase();
+			
+			while(true){
+			
+				for(let i of this.listaPacjentow){
+					
+					if(i.nazwisko == nazwisko){
+						let choroba = prompt("Podaj nazwe choroby");
+						i.listaChorob.push(choroba);
+						return false;
+					}
+				}
+				for(let i of this.listaPacjentow){
+				
+					if(i.nazwisko !== nazwisko){
+						console.log("Brak pacjenta w bazie przychodni");
+						return false;
+					}
+					
+				}
+			}
+		}
+	}
+	
+	pokazChorobe(){
+		if(this.listaPacjentow == 0){
+		
+			console.log("Brak pacjentow w przychodni");
+		}
+		else if(this.listaPacjentow.length > 0){
+			
+			let nazwisko = prompt("Podaj nazwisko pacjenta").toUpperCase();
+			
+			while(true){
+				
+				for(let i of this.listaPacjentow){
+					
+					if(i.nazwisko == nazwisko){
+						
+						if(i.listaChorob.length > 0){
+						
+							console.log(`Imie: ${i.imie} Nazwisko: ${i.nazwisko}`);
+							console.log(`Choroby: ${i.listaChorob}`);
+							return false;
+						}
+						else if(i.listaChorob.length == 0){
+							console.log(`Imie: ${i.imie} Nazwisko: ${i.nazwisko}`);
+							console.log("Choroby: brak");
+							return false;
+						}	
+					}
+				}
+				for(let i of this.listaPacjentow){
+					if(i.nazwisko !== nazwisko){
+						
+						console.log("Brak pacjenta w bazie przychodni");
+						return false;
+						
+					}
+				}
+			}
+		}
+	}
+}
+
+class PrzychodniaController extends Przychodnia{ 
+
+	constructor(){
+		
+		super();
+		this.listaPrzychodni = [];
+	}
+	
+	dodajPrzychodnie(nazwa, miasto){
+		
+		while(true){
+		
+			nazwa = prompt("Podaj nazwe przychodni").toUpperCase();
+			miasto = prompt("Podaj miasto przychodni").toUpperCase();
+							
+			if(this.listaPrzychodni.length == 0){ 
+							
+				if(nazwa == "" || miasto == ""){
+													
+					alert("Niepoprawna nazwa albo miasto");
+					return false;
+													
+				}
+				else{
+									
+					let przychodnia = new Przychodnia(nazwa, miasto);	
+						this.listaPrzychodni.push(przychodnia);
+						console.log(`Przychodnia ${nazwa} dodana do NFZ`);
+						return false;
+				}
+								
+			}
+			else if(this.listaPrzychodni.length > 0){
+							
+				for(let i of this.listaPrzychodni){
+								
+					if(i.nazwa == nazwa){
+										
+						alert("Przychodnia juz jest w bazie NFZ");
+						return false;
+										
+					}
+				}
+				if(nazwa == "" || miasto == ""){
+													
+					alert("Niepoprawna nazwa albo miasto");
+					return false;
+				}
+				else{
+									
+					let przychodnia = new Przychodnia(nazwa, miasto);	
+					this.listaPrzychodni.push(przychodnia);
+					console.log(`Przychodnia ${nazwa} dodana do NFZ`);
+					return false;
+				}				
+			}
+		}
+	}
+	dodajPacjentaDoPrzychodni(){
+	
+		let nazwa = prompt("Podaj nazwe przychodni").toUpperCase();
+		
+		while(true){
+		
+			for(let i of this.listaPrzychodni){
+										
+				if(i.nazwa == nazwa){
+					i.dodajPacjenta();
+					return false;
+				}				
+			}
+			for(let i of this.listaPrzychodni){
+			
+				if(i.nazwa !== nazwa){
+					alert("Brak przychodni w bazie NFZ");
+					return false;
+				}
+			}
+		}
+	}
+
+	dodajChorobePryzchodnia(){
+	
+		let nazwa = prompt("Podaj nazwe przychodni").toUpperCase();
+		
+		while(true){
+		
+			for(let i of this.listaPrzychodni){
+										
+				if(i.nazwa == nazwa){
+					i.dodajChorobe();
+					return false;
+				}				
+			}
+			for(let i of this.listaPrzychodni){
+			
+				if(i.nazwa !== nazwa){
+					alert("Brak przychodni w bazie NFZ");
+					return false;
+				}
+			}
+		}
+	}
+	
+	pokazChorobePrzychodnia(){
+	
+		let nazwa = prompt("Podaj nazwe przychodni").toUpperCase();
+		
+		while(true){
+			for(let i of this.listaPrzychodni){
+										
+				if(i.nazwa == nazwa){
+					i.pokazChorobe();
+					return false;
+				}				
+			}
+			for(let i of this.listaPrzychodni){
+			
+				if(i.nazwa !== nazwa){
+					alert("Brak przychodni w bazie NFZ");
+					return false;
+				}
+			}
+		}
+	}
+	listaPacjentowPrzychodnia(){
+	
+		let nazwa = prompt("Podaj nazwe przychodni").toUpperCase();
+
+			for(let i of this.listaPrzychodni){
+									
+				if(i.nazwa == nazwa){
+									
+					console.log(`Przychodnia: ${i.nazwa}`);
+					i.pokazPacjenta();
+					return false;
+				}
+				else if(i.nazwa !== nazwa){
+				
+					console.log("Brak przychodni w bazie")
+					return false;
+				}
+			}
+	}
+	
+	menu1(){
+		if(this.listaPrzychodni.length == 0){
+		
+			console.log("Brak przychodni i pacjentow w bazie NFZ");
+		}
+		else if(this.listaPrzychodni.length > 0){
+		
+		let c = parseInt(prompt("Wybierz opcje: 1-Dodaj chorobe, 2-Lista chorob pacjenta"));
+				
+			if(c == 1){
+					
+				this.dodajChorobePryzchodnia();
+			}	
+			
+			else if(c == 2){
+					
+				this.pokazChorobePrzychodnia();
+
+			}
+			else{
+				alert("Nieznana opcja menu");
+			}
+		}
+	}
+	
+}
+
+class Fund extends PrzychodniaController{
+
+	constructor(){
+		super();
+		this.menu();
+	}
+	
+	menu(){
+	
+		while(true){
+			
+			let a = parseInt(prompt("Wybierz opcje: 1-Przychodnia, 2-Pacjent, 3-Koniec"));
+			
+			if(a == 1){
+				
+				let b = parseInt(prompt("Wybierz opcje: 1-Dodaj przychodnie, 2-Dodaj pacjenta do przychodni, 3-Lista przychodni, 4-Lista pacjentow w przychodni"));
+				
+				if(b == 1){
+
+					this.dodajPrzychodnie();
+
+				}
+				else if(b == 2){
+					
+					this.dodajPacjentaDoPrzychodni();
+				}
+				else if(b == 3){
+					if(this.listaPrzychodni.length == 0){
+						
+						console.log("Brak przychodni w bazie NFZ");
+					}
+					else if(this.listaPrzychodni.length > 0){
+						
+						for(let i of this.listaPrzychodni){
+						
+							console.log(`Nazwa przychodni: ${i.nazwa} Miasto: ${i.miasto}`);
+						}
+					}
+				}
+					
+				else if(b == 4){
+					if(this.listaPrzychodni.length == 0){
+						
+						console.log("Brak przychodni w bazie NFZ");
+					}
+					else if(this.listaPrzychodni.length > 0){
+						
+						this.listaPacjentowPrzychodnia();
+					}
+				}
+				else{
+					alert("Nieznana opcja menu");
+				}
+			
+			}
+			
+			else if(a == 2){
+		
+				this.menu1();
+			}
+			
+			else if(a == 3){
+				break;
+			}
+			else{
+				alert("Nieznana opcja menu");
+			}
+		}	
+	}
+}
+
+
+
+
+let nfz = new Fund("NFZ");
+
+</script>
